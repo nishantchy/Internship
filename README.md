@@ -255,3 +255,34 @@ This documentation is part of a larger DevOps portfolio project. For more detail
 
 admin_usr: nishant18
 admin_pw: nishant
+
+## Deployment Strategy: Blue-Green Deployments on Vercel
+
+Vercel uses a blue-green (atomic) deployment strategy:
+
+- **Every push to `main` triggers a new deployment** in an isolated environment.
+- **If the build and deployment succeed,** the new deployment becomes the new production version (your domain points to it).
+- **If the build or deployment fails,** the previous production deployment remains active and unaffected—your users see no downtime or errors.
+- **Rollbacks are easy:** You can revert to any previous successful deployment from the Vercel dashboard.
+
+**Summary Table:**
+
+| Push to main | Build Succeeds? | What Users See      |
+| ------------ | --------------- | ------------------- |
+| Yes          | Yes             | New deployment      |
+| Yes          | No              | Previous deployment |
+
+This ensures zero-downtime deployments and safe rollouts, matching the blue-green deployment pattern.
+
+---
+
+## Observability & Monitoring (Prometheus, Grafana, etc.)
+
+- **Vercel provides built-in analytics and error logging** for your deployments.
+- **Direct integration with Prometheus or Grafana is not natively supported** on Vercel, as it is a serverless platform and does not expose infrastructure metrics.
+- For advanced monitoring:
+  - Use Vercel's built-in analytics and logs for performance and error tracking.
+  - Integrate third-party services (like Sentry, LogRocket, or Datadog) for application-level monitoring.
+  - For custom metrics, you would need to send data to an external Prometheus/Grafana instance from your app code (e.g., via HTTP API), but you cannot run Prometheus or Grafana directly on Vercel.
+
+---
