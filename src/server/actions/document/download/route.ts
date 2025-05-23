@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from "next/server";
-import { generateSignedUrl } from "@/server/actions/document/constants";
 
 export async function GET(req: NextRequest) {
   try {
@@ -12,16 +11,11 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    const signedUrl = await generateSignedUrl(publicId);
-
-    if (!signedUrl) {
-      return NextResponse.json(
-        { error: "Failed to generate download URL" },
-        { status: 500 },
-      );
-    }
-
-    return NextResponse.json({ url: signedUrl });
+    // generateSignedUrl is not implemented, so return an error for now
+    return NextResponse.json(
+      { error: "Download URL generation is not implemented." },
+      { status: 500 },
+    );
   } catch (error) {
     console.error("Download error:", error);
     return NextResponse.json(

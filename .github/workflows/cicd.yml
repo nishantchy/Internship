@@ -26,19 +26,22 @@ jobs:
       - name: Install sharp
         run: npm install sharp
 
-      - name: Update browserslist database
-        run: npx browserslist@latest --update-db
-
       - name: Build application
         run: npm run build
         env:
-          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
-          # Add all your environment variables here
-          MONGODB_URI: ${{ secrets.MONGODB_URI }}
-          CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
-          CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+          AUTH_KEY_SECRET: ${{ secrets.AUTH_KEY_SECRET }}
+          CLOUDFLARE_URL: ${{ secrets.CLOUDFLARE_URL }}
+          JWT_SECRETE: ${{ secrets.JWT_SECRETE }}
+          MONGO: ${{ secrets.MONGO }}
+          NEXT_PUBLIC_CLOUDINARY_API_KEY: ${{ secrets.NEXT_PUBLIC_CLOUDINARY_API_KEY }}
+          NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: ${{ secrets.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME }}
+          NEXT_PUBLIC_CLOUDINARY_UPLOAD_URL: ${{ secrets.NEXT_PUBLIC_CLOUDINARY_UPLOAD_URL }}
           CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
-          # Add other environment variables as needed
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          NEXT_PUBLIC_EMAILJS_SERVICE_ID: ${{ secrets.NEXT_PUBLIC_EMAILJS_SERVICE_ID }}
+          NEXT_PUBLIC_EMAILJS_TEMPLATE_ID: ${{ secrets.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID }}
+          NEXT_PUBLIC_EMAILJS_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY }}
 
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v20
@@ -49,10 +52,16 @@ jobs:
           working-directory: ./
           vercel-args: "--prod"
         env:
-          # Pass all environment variables to Vercel
-          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
-          MONGODB_URI: ${{ secrets.MONGODB_URI }}
-          CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
-          CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+          AUTH_KEY_SECRET: ${{ secrets.AUTH_KEY_SECRET }}
+          CLOUDFLARE_URL: ${{ secrets.CLOUDFLARE_URL }}
+          JWT_SECRETE: ${{ secrets.JWT_SECRETE }}
+          MONGO: ${{ secrets.MONGO }}
+          NEXT_PUBLIC_CLOUDINARY_API_KEY: ${{ secrets.NEXT_PUBLIC_CLOUDINARY_API_KEY }}
+          NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: ${{ secrets.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME }}
+          NEXT_PUBLIC_CLOUDINARY_UPLOAD_URL: ${{ secrets.NEXT_PUBLIC_CLOUDINARY_UPLOAD_URL }}
           CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
-          # Add other environment variables as needed
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          NEXT_PUBLIC_EMAILJS_SERVICE_ID: ${{ secrets.NEXT_PUBLIC_EMAILJS_SERVICE_ID }}
+          NEXT_PUBLIC_EMAILJS_TEMPLATE_ID: ${{ secrets.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID }}
+          NEXT_PUBLIC_EMAILJS_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY }}

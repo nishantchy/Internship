@@ -14,7 +14,8 @@ const RichContentPreview = dynamic(
   { ssr: false, loading: () => <div className="h-[80vh]"></div> },
 );
 
-const page = async () => {
+const page = async ({ params }: { params: { lang: string } }) => {
+  const { lang } = params;
   noStore();
   try {
     await connectDB();
@@ -26,10 +27,14 @@ const page = async () => {
     return (
       <>
         <PageHeader
-          title="Chairman's Message"
+          lang={lang}
+          title={{ en: "Chairman's Message", np: "अध्यक्षको सन्देश" }}
           breadcrumbs={[
-            { label: "Home", href: "/" },
-            { label: "Chairman's Message", href: "/about/chairman" },
+            { label: { en: "Home", np: "होम" }, href: "/" },
+            {
+              label: { en: "Chairman's Message", np: "अध्यक्षको सन्देश" },
+              href: "/about/chairman",
+            },
           ]}
         />
         <section className="section container mx-auto w-full">
