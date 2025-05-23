@@ -71,20 +71,36 @@ This project demonstrates a modern web application built with Next.js, with a st
 
 ## DevOps Implementation
 
-### 1. Automated CI/CD with GitHub Actions
+### DevOps Work Done in This Project
 
-#### Workflow Overview
+- **CI/CD Pipeline Setup:**
 
-- **Trigger:** On push to `main` or pull requests
-- **Steps:**
-  1. Checkout code
-  2. Set up Node.js and cache dependencies
-  3. Install dependencies
-  4. Install and configure build tools (e.g., sharp for image optimization)
-  5. Build and type-check the application
-  6. Deploy to Vercel using secure tokens and environment variables
+  - Designed and implemented a GitHub Actions workflow for automated build and deployment.
+  - Ensured the workflow installs dependencies, builds the app, and deploys to Vercel on every push to `main`.
 
-#### Example Workflow
+- **Environment Management:**
+
+  - Managed sensitive environment variables using GitHub Secrets for CI/CD and Vercel dashboard for runtime.
+  - Ensured no secrets are committed to the repository.
+
+- **Vercel Deployment:**
+
+  - Automated deployment to Vercel using the [amondnet/vercel-action](https://github.com/amondnet/vercel-action) GitHub Action.
+  - Configured Vercel project and environment variables for production and preview deployments.
+
+- **Secret Management:**
+
+  - Coordinated secret storage between GitHub Actions and Vercel to ensure secure and seamless deployments.
+
+- **Build Troubleshooting:**
+
+  - Diagnosed and resolved build issues related to package managers, lockfiles, and native dependencies (e.g., sharp).
+  - Fixed stack overflow errors by adjusting dependency installation and configuration.
+
+- **Documentation:**
+  - Wrote and maintained clear documentation for DevOps processes, environment setup, and deployment steps.
+
+### CI/CD Workflow Example
 
 ```yaml
 name: CI/CD Pipeline
@@ -106,18 +122,23 @@ jobs:
           cache: "npm"
       - name: Install dependencies
         run: npm ci
-      - name: Install sharp
-        run: npm install sharp
-      - name: Update browserslist database
-        run: npx browserslist@latest --update-db
       - name: Build application
         run: npm run build
         env:
-          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
-          MONGODB_URI: ${{ secrets.MONGODB_URI }}
-          CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
-          CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+          # All required environment variables from GitHub Secrets
+          AUTH_KEY_SECRET: ${{ secrets.AUTH_KEY_SECRET }}
+          CLOUDFLARE_URL: ${{ secrets.CLOUDFLARE_URL }}
+          JWT_SECRETE: ${{ secrets.JWT_SECRETE }}
+          MONGO: ${{ secrets.MONGO }}
+          NEXT_PUBLIC_CLOUDINARY_API_KEY: ${{ secrets.NEXT_PUBLIC_CLOUDINARY_API_KEY }}
+          NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: ${{ secrets.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME }}
+          NEXT_PUBLIC_CLOUDINARY_UPLOAD_URL: ${{ secrets.NEXT_PUBLIC_CLOUDINARY_UPLOAD_URL }}
           CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          NEXT_PUBLIC_EMAILJS_SERVICE_ID: ${{ secrets.NEXT_PUBLIC_EMAILJS_SERVICE_ID }}
+          NEXT_PUBLIC_EMAILJS_TEMPLATE_ID: ${{ secrets.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID }}
+          NEXT_PUBLIC_EMAILJS_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY }}
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v20
         with:
@@ -127,29 +148,21 @@ jobs:
           working-directory: ./
           vercel-args: "--prod"
         env:
-          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
-          MONGODB_URI: ${{ secrets.MONGODB_URI }}
-          CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
-          CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+          # All required environment variables from GitHub Secrets
+          AUTH_KEY_SECRET: ${{ secrets.AUTH_KEY_SECRET }}
+          CLOUDFLARE_URL: ${{ secrets.CLOUDFLARE_URL }}
+          JWT_SECRETE: ${{ secrets.JWT_SECRETE }}
+          MONGO: ${{ secrets.MONGO }}
+          NEXT_PUBLIC_CLOUDINARY_API_KEY: ${{ secrets.NEXT_PUBLIC_CLOUDINARY_API_KEY }}
+          NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME: ${{ secrets.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME }}
+          NEXT_PUBLIC_CLOUDINARY_UPLOAD_URL: ${{ secrets.NEXT_PUBLIC_CLOUDINARY_UPLOAD_URL }}
           CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          NEXT_PUBLIC_EMAILJS_SERVICE_ID: ${{ secrets.NEXT_PUBLIC_EMAILJS_SERVICE_ID }}
+          NEXT_PUBLIC_EMAILJS_TEMPLATE_ID: ${{ secrets.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID }}
+          NEXT_PUBLIC_EMAILJS_PUBLIC_KEY: ${{ secrets.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY }}
 ```
-
-### 2. Secure Environment Management
-
-- **Secrets in GitHub:** All sensitive values (API keys, DB URIs, etc.) are stored as GitHub repository secrets and injected at build and deploy time.
-- **Vercel Environment Variables:** For runtime configuration, environment variables are also set in the Vercel dashboard for production and preview deployments.
-- **No secrets are ever committed to the repository.**
-
-### 3. Automated Build & Type Checking
-
-- The workflow runs `npm run build` which triggers Next.js static analysis, type checking, and production build.
-- Any build or type errors will fail the pipeline, ensuring only healthy code is deployed.
-
-### 4. Automated Deployment to Vercel
-
-- Uses the [amondnet/vercel-action](https://github.com/amondnet/vercel-action) to deploy the built app to Vercel.
-- Deployments are atomic and preview URLs are generated for pull requests.
-- All environment variables are securely passed to Vercel at deploy time.
 
 ## Deployment Process
 
@@ -175,18 +188,19 @@ jobs:
 ### Required Environment Variables
 
 ```env
-# API Configuration
-NEXT_PUBLIC_API_URL=
-
-# Database
-MONGODB_URI=
-
-# Cloudinary
-CLOUDINARY_CLOUD_NAME=
-CLOUDINARY_API_KEY=
+AUTH_KEY_SECRET=
+CLOUDFLARE_URL=
+JWT_SECRETE=
+MONGO=
+NEXT_PUBLIC_CLOUDINARY_API_KEY=
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=
+NEXT_PUBLIC_CLOUDINARY_UPLOAD_URL=
 CLOUDINARY_API_SECRET=
-
-# Vercel
+SMTP_USER=
+SMTP_PASS=
+NEXT_PUBLIC_EMAILJS_SERVICE_ID=
+NEXT_PUBLIC_EMAILJS_TEMPLATE_ID=
+NEXT_PUBLIC_EMAILJS_PUBLIC_KEY=
 VERCEL_TOKEN=
 VERCEL_ORG_ID=
 VERCEL_PROJECT_ID=
@@ -233,8 +247,11 @@ VERCEL_PROJECT_ID=
 
 ## License
 
-[Your License]
+[nishantchy]
 
 ---
 
-This documentation is part of a larger DevOps portfolio project. For more details about the implementation and architecture decisions, visit the [Documentation Project](link-to-documentation-project).
+This documentation is part of a larger DevOps portfolio project. For more details about the implementation and architecture decisions, visit the [Documentation Project](chaudharynishant.com.np).
+
+admin_usr: nishant18
+admin_pw: nishant
